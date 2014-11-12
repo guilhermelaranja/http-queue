@@ -29,7 +29,10 @@ public class CronExpressionParserTest {
 						"30 */5 * ? * * *",
 						"0 45 4 ? * * *",
 						"0 45 5 ? * * *",
-						"0 50 * ? * * *"
+						"0 50 * ? * * *",
+						"* * * ? * * *",
+						"* * * 10 * ? *",
+						"* * * ? * 5 *"
 				};
 
 		final Date now = new Date();

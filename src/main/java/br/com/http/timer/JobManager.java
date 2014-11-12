@@ -52,7 +52,7 @@ public class JobManager {
 		job.serialize(timerHandle);
 
 		logger.info("Timer {} created with cron expression {}. The next timeout is {}.", job.getId(),
-				job.getCronExpression(), timer.getNextTimeout());
+				job.getCronExpressionSafeForQuartzParser(), timer.getNextTimeout());
 
 		if (job.getId() != null) {
 			em.merge(job);
