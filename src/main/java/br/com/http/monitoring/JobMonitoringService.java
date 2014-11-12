@@ -52,7 +52,7 @@ public class JobMonitoringService {
 	private List<JobExecutionInfo> transformActualJobExecutionToInfo(List<JobExecution> resultList) {
 		List<JobExecutionInfo> history = new ArrayList<>();
 		for (JobExecution exec : resultList) {
-			history.add(new JobExecutionInfo(exec.getId(), exec.getFinish(), exec.getStart(), exec.getHttpResponseStatus(), exec.getStatus().name()));
+			history.add(new JobExecutionInfo(exec.getId(), exec.getFinish(), exec.getStart(), exec.getHttpResponseStatus(), exec.getStatus() == null ? "null" : exec.getStatus().name()));
 		}
 		return history;
 	}
