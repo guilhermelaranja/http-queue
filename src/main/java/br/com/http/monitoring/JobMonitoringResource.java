@@ -2,8 +2,7 @@ package br.com.http.monitoring;
 
 import com.google.gson.Gson;
 
-import javax.enterprise.context.SessionScoped;
-
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/monitor")
-@SessionScoped
+@RequestScoped
 public class JobMonitoringResource {
 
 	@Inject
