@@ -25,11 +25,9 @@ public class JobInfo {
 
 	private void updateHealthInfo() {
 		if (emptyHistory()) return;
-		for (JobExecutionInfo info : history) {
-			if (healthCheckNotOk(info)) {
-				healthy = false;
-				return;
-			}
+		if (healthCheckNotOk(history.get(0))) {
+			healthy = false;
+			return;
 		}
 		healthy = true;
 	}
@@ -48,12 +46,15 @@ public class JobInfo {
 	}
 
 	protected boolean isExecutionLate(JobExecutionInfo info) {
+		if (info.getStatus().equals("Running")) {
+			return false;
+		}
 		try {
 			final Date nextExecution = CronExpressionParser.nextExecution(cronExpression, info.getTsFinish());
 			final Date now = new Date();
 			final boolean check = nextExecution.compareTo(now) < 0;
 			if(check) {
-				reasons.add(String.format("Execution of job id %d is late. Next execution begining on %s should be %s, and now is %s. Cron expressions: '%s'",
+				reasons.add(String.format("Most recent execution of job id %d is late. Next execution begining on %s should be %s, and now is %s. Cron expressions: '%s'",
 						jobId, info.getTsFinish(), nextExecution, now, cronExpression));
 			}
 			return check;
@@ -65,17 +66,23 @@ public class JobInfo {
 	}
 
 	private boolean httpStatusIsNotOK(JobExecutionInfo info) {
+		if (info.getHttpResponseStatus() == null && info.getStatus().equals("Running")) {
+			return false;
+		}
 		final boolean check = info.getHttpResponseStatus() != 200;
 		if (check) {
-			reasons.add(String.format("Http response code is not 200"));
+			reasons.add(String.format("Http response code is not 200 for last execution in history"));
 		}
 		return check;
 	}
 
 	private boolean jobsStatusIsNotSuccessful(JobExecutionInfo info) {
+		if (info.getStatus().equals("Running")) {
+			return false;
+		}
 		final boolean check = !info.getStatus().equals("Success");
 		if (check) {
-			reasons.add(String.format("Http status is not 'Success'"));
+			reasons.add(String.format("Http status is not Success for last execution in history"));
 		}
 		return check;
 	}

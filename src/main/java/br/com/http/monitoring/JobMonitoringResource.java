@@ -21,10 +21,10 @@ public class JobMonitoringResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getJobInformation(@QueryParam(value = "numberOfJobs") Integer numberOfJobs,
-			@QueryParam(value = "lookBackHours") Integer lookBackHours) {
-		int lookBackHrs = lookBackHours == null ? 1 : lookBackHours;
+			@QueryParam(value = "historySize") Integer historySize) {
+		int hstSize = historySize == null ? 10 : historySize;
 		int numberOfJbs = (numberOfJobs == null || numberOfJobs == 0) ? -1 : numberOfJobs;
-		JobMonitoringResponse responseEntity = jobMonitoringService.findJobs(numberOfJbs, lookBackHrs);
+		JobMonitoringResponse responseEntity = jobMonitoringService.findJobs(numberOfJbs, hstSize);
 		final String jsonResponse = new Gson().toJson(responseEntity);
 		Response.Status responseStatus;
 		if (responseEntity.areAllJobsHealthy() && responseEntity.getMessages().size() == 0) {

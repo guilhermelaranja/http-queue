@@ -22,7 +22,7 @@ public class JobMonitoringResponseTest {
 		assertTrue(happyResponse.areAllJobsHealthy());
 		assertTrue(happyResponse.getMessages().isEmpty());
 
-		history.add(new JobExecutionInfo(2l, now, now, 500, "Success",null ));
+		history.add(0, new JobExecutionInfo(2l, now, now, 500, "Success",null ));
 		jobs.add(new JobInfo(2l, history, cronExpression));
 		JobMonitoringResponse sadResponse = new JobMonitoringResponse(jobs, 2);
 		assertFalse(sadResponse.areAllJobsHealthy());

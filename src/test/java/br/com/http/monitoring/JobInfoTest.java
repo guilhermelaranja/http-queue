@@ -24,12 +24,12 @@ public class JobInfoTest {
 		assertTrue(info1.isHealthy());
 
 		List<JobExecutionInfo> historyJob2 = new ArrayList<>(historyJob1);
-		historyJob2.add(new JobExecutionInfo(2l, now, now, 500, "Success", null));
+		historyJob2.add(0, new JobExecutionInfo(2l, now, now, 500, "Success", null));
 		JobInfo info2 = new JobInfo(2l, historyJob2, defaultCronExpression);
 		assertFalse(info2.isHealthy());
 
 		List<JobExecutionInfo> historyJob3 = new ArrayList<>(historyJob1);
-		historyJob3.add(new JobExecutionInfo(3l, now, now, null, "Failed",
+		historyJob3.add(0, new JobExecutionInfo(3l, now, now, null, "Failed",
 				"java.net.UnknownHostException: dev-frontend: unknown error"));
 		JobInfo info3 = new JobInfo(3l, historyJob3, defaultCronExpression);
 		assertFalse(info3.isHealthy());
@@ -37,7 +37,7 @@ public class JobInfoTest {
 		List<JobExecutionInfo> historyJob4 = new ArrayList<>(historyJob1);
 		//ultima execucao atrasada
 		final Date late = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2014");
-		historyJob4.add(new JobExecutionInfo(4l, late, late, 200, "Success", null));
+		historyJob4.add(0, new JobExecutionInfo(4l, late, late, 200, "Success", null));
 		JobInfo info4 = new JobInfo(3l, historyJob4, defaultCronExpression);
 		assertFalse(info4.isHealthy());
 

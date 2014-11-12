@@ -15,30 +15,29 @@ public class JobMonitoringService {
 	@PersistenceContext(unitName = "primary")
 	private EntityManager em;
 
-	public JobMonitoringResponse findJobs(int expectedNumberOfActiveJobs, int lookBackHours) {
+	public JobMonitoringResponse findJobs(int expectedNumberOfActiveJobs, int historySize) {
 		List<Job> actualJobs = findActualActiveJobs();
-		List<JobInfo> jobInfos = buildJobInfos(actualJobs, lookBackHours);
+		List<JobInfo> jobInfos = buildJobInfos(actualJobs, historySize);
 		JobMonitoringResponse jobMonitoringResponse = new JobMonitoringResponse(jobInfos, expectedNumberOfActiveJobs);
 		return jobMonitoringResponse;
 	}
 
-	private List<JobInfo> buildJobInfos(List<Job> actualJobs, int lookBackFinishTimeInHours) {
+	private List<JobInfo> buildJobInfos(List<Job> actualJobs, int historySize) {
 		List<JobInfo> jobInfos = new ArrayList<>();
 		for (Job job : actualJobs) {
-			List<JobExecutionInfo> history = buildJobExecutionHistory(job, lookBackFinishTimeInHours);
+			List<JobExecutionInfo> history = buildJobExecutionHistory(job, historySize);
 			jobInfos.add(new JobInfo(job.getId(), history, job.getCronExpressionSafeForQuartzParser()));
 		}
 		return jobInfos;
 	}
 
-	private List<JobExecutionInfo> buildJobExecutionHistory(Job job, int lookBackFinishTimeInHours) {
+	private List<JobExecutionInfo> buildJobExecutionHistory(Job job, int historySize) {
 		String hql = "FROM JobExecution exec " +
 				" WHERE exec.job = :jobId " +
-				" AND exec.finish > :hoursBefore" +
 				" ORDER BY exec.finish DESC";
 		TypedQuery<JobExecution> query = em.createQuery(hql, JobExecution.class);
 		query.setParameter("jobId", job.getId());
-		query.setParameter("hoursBefore", toThePast(new Date(), lookBackFinishTimeInHours));
+		query.setMaxResults(historySize);
 		return transformActualJobExecutionToInfo(query.getResultList());
 	}
 
