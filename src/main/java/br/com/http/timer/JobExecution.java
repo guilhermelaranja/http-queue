@@ -80,4 +80,24 @@ public class JobExecution {
 			this.finish = new Date();
 		}
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Date getStart() {
+		return start;
+	}
+
+	public Date getFinish() {
+		return finish;
+	}
+
+	public Integer getHttpResponseStatus() {
+		return httpResponseStatus;
+	}
+
+	public JobExecutionStatus getStatus() {
+		return status;
+	}
 }

@@ -3,6 +3,7 @@ package br.com.http.monitoring;
 import br.com.http.utils.CronExpressionParser;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class JobInfo {
 
 	private Long jobId;
 	private boolean healthy;
+	private List<String> reasons;
 	private String cronExpression;
 	private List<JobExecutionInfo> history;
 
@@ -17,6 +19,7 @@ public class JobInfo {
 		this.jobId = jobId;
 		this.history = history;
 		this.cronExpression = cronExpression;
+		this.reasons = new ArrayList<>();
 		updateHealthInfo();
 	}
 
@@ -32,20 +35,35 @@ public class JobInfo {
 
 	protected boolean isExecutionLate(JobExecutionInfo info) {
 		try {
-			return CronExpressionParser.nextExecution(cronExpression,info.getTsFinish()).compareTo(new Date()) < 0;
+			final Date nextExecution = CronExpressionParser.nextExecution(cronExpression, info.getTsFinish());
+			final Date now = new Date();
+			final boolean check = nextExecution.compareTo(now) < 0;
+			if(check) {
+				reasons.add(String.format("Execution of job id %d is late. Next execution begining on %s should be %s, and now is %s. Cron expressions: '%s'",
+						jobId, info.getTsFinish(), nextExecution, now, cronExpression));
+			}
+			return check;
 		} catch (ParseException e) {
-			e.printStackTrace();
+			reasons.add(String.format("Could not parse cron expression '%s' for job id %d", cronExpression, jobId));
 		}
 		// if there's a parse error, assume job is not running ok
 		return false;
 	}
 
 	private boolean httpStatusIsNotOK(JobExecutionInfo info) {
-		return info.getHttpResponseStatus() != 200;
+		final boolean check = info.getHttpResponseStatus() != 200;
+		if (check) {
+			reasons.add(String.format("Http response code is not 200"));
+		}
+		return check;
 	}
 
 	private boolean jobsStatusIsNotSuccessful(JobExecutionInfo info) {
-		return !info.getStatus().equals("Success");
+		final boolean check = !info.getStatus().equals("Success");
+		if (check) {
+			reasons.add(String.format("Http status is not 'Success'"));
+		}
+		return check;
 	}
 
 	public Long getJobId() {
