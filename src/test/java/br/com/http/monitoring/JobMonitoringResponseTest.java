@@ -15,21 +15,21 @@ public class JobMonitoringResponseTest {
 		List<JobInfo> jobs = new ArrayList<>();
 		List<JobExecutionInfo> history = new ArrayList<>();
 		Date now = new Date();
-		history.add(new JobExecutionInfo(1l, now, now, 200, "Success"));
+		history.add(new JobExecutionInfo(1l, now, now, 200, "Success", null));
 		String cronExpression = "0 30 * ? * * *";
 		jobs.add(new JobInfo(1l, history, cronExpression));
 		JobMonitoringResponse happyResponse = new JobMonitoringResponse(jobs, 1);
 		assertTrue(happyResponse.areAllJobsHealthy());
 		assertTrue(happyResponse.getMessages().isEmpty());
 
-		history.add(new JobExecutionInfo(2l, now, now, 500, "Success"));
+		history.add(new JobExecutionInfo(2l, now, now, 500, "Success",null ));
 		jobs.add(new JobInfo(2l, history, cronExpression));
 		JobMonitoringResponse sadResponse = new JobMonitoringResponse(jobs, 2);
 		assertFalse(sadResponse.areAllJobsHealthy());
 		assertEquals(1, sadResponse.getMessages().size());
 		assertEquals("Job id 2 is not healthy", sadResponse.getMessages().get(0));
 
-		history.add(new JobExecutionInfo(3l, now, now, 200, "BlaDifferentFromSuccess"));
+		history.add(new JobExecutionInfo(3l, now, now, 200, "BlaDifferentFromSuccess",null ));
 		jobs.add(new JobInfo(3l, history, cronExpression));
 		JobMonitoringResponse sadderResponse = new JobMonitoringResponse(jobs, 4);
 		assertFalse(sadderResponse.areAllJobsHealthy());

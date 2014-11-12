@@ -24,13 +24,27 @@ public class JobInfo {
 	}
 
 	private void updateHealthInfo() {
+		if (emptyHistory()) return;
 		for (JobExecutionInfo info : history) {
-			if (jobsStatusIsNotSuccessful(info) || httpStatusIsNotOK(info) || isExecutionLate(info)) {
+			if (healthCheckNotOk(info)) {
 				healthy = false;
 				return;
 			}
 		}
 		healthy = true;
+	}
+
+	private boolean healthCheckNotOk(JobExecutionInfo info) {
+		return jobsStatusIsNotSuccessful(info) || httpStatusIsNotOK(info) || isExecutionLate(info);
+	}
+
+	private boolean emptyHistory() {
+		if (history.isEmpty()) {
+			healthy = false;
+			reasons.add(String.format("Empty execution history for job id %d", jobId));
+			return true;
+		}
+		return false;
 	}
 
 	protected boolean isExecutionLate(JobExecutionInfo info) {
@@ -81,4 +95,6 @@ public class JobInfo {
 	public List<JobExecutionInfo> getHistory() {
 		return history;
 	}
+
+
 }

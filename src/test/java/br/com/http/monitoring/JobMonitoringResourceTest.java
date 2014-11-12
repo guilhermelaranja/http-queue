@@ -66,14 +66,14 @@ public class JobMonitoringResourceTest extends IntegrationTestCase {
 	@Test
 	public void getNoParams() {
 		SimplifiedResponse response = get("/monitor");
-		assertEquals(200, response.getStatusCode());
+		assertEquals(206, response.getStatusCode());
 		assertNotNull(response.getContent());
 	}
 
 	@Test
 	public void getWithParams() {
 		SimplifiedResponse response = get("/monitor?numberOfJobs=2&lookBackHours=2");
-		assertEquals(200, response.getStatusCode());
+		assertEquals(206, response.getStatusCode());
 		assertNotNull(response.getContent());
 
 		SimplifiedResponse response2 = get("/monitor?numberOfJobs=3&lookBackHours=2");

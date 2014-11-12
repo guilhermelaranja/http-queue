@@ -100,4 +100,8 @@ public class JobExecution {
 	public JobExecutionStatus getStatus() {
 		return status;
 	}
+
+	public String getClientError() {
+		return clientError;
+	}
 }

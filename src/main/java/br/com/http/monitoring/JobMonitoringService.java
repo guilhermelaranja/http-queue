@@ -33,9 +33,9 @@ public class JobMonitoringService {
 
 	private List<JobExecutionInfo> buildJobExecutionHistory(Job job, int lookBackFinishTimeInHours) {
 		String hql = "FROM JobExecution exec " +
-					" WHERE exec.job = :jobId " +
-					" AND exec.finish > :hoursBefore" +
-					" ORDER BY exec.finish DESC";
+				" WHERE exec.job = :jobId " +
+				" AND exec.finish > :hoursBefore" +
+				" ORDER BY exec.finish DESC";
 		TypedQuery<JobExecution> query = em.createQuery(hql, JobExecution.class);
 		query.setParameter("jobId", job.getId());
 		query.setParameter("hoursBefore", toThePast(new Date(), lookBackFinishTimeInHours));
@@ -52,7 +52,9 @@ public class JobMonitoringService {
 	private List<JobExecutionInfo> transformActualJobExecutionToInfo(List<JobExecution> resultList) {
 		List<JobExecutionInfo> history = new ArrayList<>();
 		for (JobExecution exec : resultList) {
-			history.add(new JobExecutionInfo(exec.getId(), exec.getFinish(), exec.getStart(), exec.getHttpResponseStatus(), exec.getStatus() == null ? "null" : exec.getStatus().name()));
+			history.add(
+					new JobExecutionInfo(exec.getId(), exec.getFinish(), exec.getStart(), exec.getHttpResponseStatus(),
+							exec.getStatus().name(), exec.getClientError()));
 		}
 		return history;
 	}

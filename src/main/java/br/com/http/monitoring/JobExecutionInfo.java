@@ -4,18 +4,21 @@ import java.util.Date;
 
 public class JobExecutionInfo {
 
-	private Long jobExecutionId;
-	private Date tsFinish;
-	private Date tsStart;
-	private int httpResponseStatus;
-	private String status;
+	private final String clientError;
+	private final Long jobExecutionId;
+	private final Date tsFinish;
+	private final Date tsStart;
+	private final Integer httpResponseStatus;
+	private final String status;
 
-	public JobExecutionInfo(Long jobExecutionId, Date tsFinish, Date tsStart, int httpResponseStatus, String status) {
+	public JobExecutionInfo(Long jobExecutionId, Date tsFinish, Date tsStart, Integer httpResponseStatus, String status,
+			String clientError) {
 		this.jobExecutionId = jobExecutionId;
 		this.tsFinish = tsFinish;
 		this.tsStart = tsStart;
 		this.httpResponseStatus = httpResponseStatus;
 		this.status = status;
+		this.clientError = clientError;
 	}
 
 	public Long getJobExecutionId() {
@@ -26,7 +29,7 @@ public class JobExecutionInfo {
 		return tsFinish;
 	}
 
-	public int getHttpResponseStatus() {
+	public Integer getHttpResponseStatus() {
 		return httpResponseStatus;
 	}
 
@@ -36,5 +39,9 @@ public class JobExecutionInfo {
 
 	public Date getTsStart() {
 		return tsStart;
+	}
+
+	public String getClientError() {
+		return clientError;
 	}
 }
