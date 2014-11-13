@@ -10,8 +10,7 @@ import javax.jms.ObjectMessage;
 
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/http"),
-		@ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1")})
+		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/http")})
 public class HttpClientMDB implements MessageListener {
 
 	public void onMessage(Message message) {
