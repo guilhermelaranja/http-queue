@@ -68,18 +68,18 @@ public class JobMonitoringResourceTest extends IntegrationTestCase {
 	@Test
 	public void getNoParams() throws IOException {
 		SimplifiedResponse response = get("/monitor/" + AuthUtil.getAuthHash());
-		assertEquals(206, response.getStatusCode());
+		assertEquals(200, response.getStatusCode());
 		assertNotNull(response.getContent());
 	}
 
 	@Test
 	public void getWithParams() throws IOException {
 		SimplifiedResponse response = get("/monitor/" + AuthUtil.getAuthHash() + "?numberOfJobs=2&historySize=2");
-		assertEquals(206, response.getStatusCode());
+		assertEquals(200, response.getStatusCode());
 		assertNotNull(response.getContent());
 
 		SimplifiedResponse response2 = get("/monitor/" + AuthUtil.getAuthHash() + "?numberOfJobs=3&historySize=2");
-		assertEquals(206, response2.getStatusCode());
+		assertEquals(200, response2.getStatusCode());
 		assertNotNull(response2.getContent());
 	}
 

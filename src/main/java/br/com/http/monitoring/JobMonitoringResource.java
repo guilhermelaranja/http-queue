@@ -35,13 +35,7 @@ public class JobMonitoringResource {
 		int numberOfJbs = (numberOfJobs == null || numberOfJobs == 0) ? -1 : numberOfJobs;
 		JobMonitoringResponse responseEntity = jobMonitoringService.findJobs(numberOfJbs, hstSize);
 		final String jsonResponse = new Gson().toJson(responseEntity);
-		Response.Status responseStatus;
-		if (responseEntity.areAllJobsHealthy() && responseEntity.getMessages().size() == 0) {
-			responseStatus = Response.Status.OK;
-		} else {
-			responseStatus = Response.Status.PARTIAL_CONTENT;
-		}
-		return Response.status(responseStatus).entity(jsonResponse).build();
+		return Response.status(Response.Status.OK).entity(jsonResponse).build();
 	}
 
 }
