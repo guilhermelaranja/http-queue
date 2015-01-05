@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.core.Response.Status;
-
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -127,7 +125,11 @@ public class HttpRequestMessage implements Serializable {
 		return responseContent;
 	}
 
+	public void setResponseStatus(int responseStatus) {
+		this.responseStatus = responseStatus;
+	}
+
 	public boolean success() {
-		return responseStatus == Status.OK.getStatusCode();
+		return String.valueOf(responseStatus).startsWith("2");
 	}
 }
