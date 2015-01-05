@@ -104,7 +104,7 @@ public class HttpRequestMessage implements Serializable {
 					logger.info("Message to {} processed successfully with code {} [{} ms]", url,
 							responseStatus, stopwatch.elapsed(TimeUnit.MILLISECONDS));
 				} else {
-					logger.info("Request to {} processed with error code {} [{} ms] : \n{}", url, responseStatus,
+					logger.error("Request to {} - {} processed with error code {} [{} ms] : \n{}", method, url, responseStatus,
 							stopwatch.elapsed(TimeUnit.MILLISECONDS), responseContent);
 				}
 			}
