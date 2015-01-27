@@ -1,5 +1,8 @@
 package br.com.http.queue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJBException;
 import javax.ejb.MessageDriven;
@@ -13,16 +16,18 @@ import javax.jms.ObjectMessage;
 		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/http")})
 public class HttpClientMDB implements MessageListener {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientMDB.class);
+
 	public void onMessage(Message message) {
 		try {
 			ObjectMessage msg = (ObjectMessage) message;
 			HttpRequestMessage httpRequestMessage = (HttpRequestMessage) msg.getObject();
 			httpRequestMessage.send();
 			if (!httpRequestMessage.success()) {
-				throw new RuntimeException("Message not processed - HTTP error code : " + httpRequestMessage.getResponseStatus());
+				LOGGER.error("Message not processed - HTTP error code : {}", httpRequestMessage.getResponseStatus());
 			}
 		} catch (JMSException e) {
-			throw new EJBException(e);
+			LOGGER.error("Error processing JMS message inside Http-Queue", e);
 		}
 	}
 }
