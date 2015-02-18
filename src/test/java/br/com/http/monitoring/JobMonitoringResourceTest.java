@@ -47,7 +47,9 @@ public class JobMonitoringResourceTest extends IntegrationTestCase {
 	@Before
 	public void setup() {
 		post("/job", new HashMap<String, String>() {
-			{
+            private static final long serialVersionUID = -5639353383247547862L;
+
+            {
 				put("id", "3");
 				put("method", "GET");
 				put("url", "http://www.dextra.com.br/");
@@ -56,7 +58,9 @@ public class JobMonitoringResourceTest extends IntegrationTestCase {
 		});
 
 		post("/job", new HashMap<String, String>() {
-			{
+            private static final long serialVersionUID = -4823493447636411845L;
+
+            {
 				put("id", "4");
 				put("method", "GET");
 				put("url", "http://www.google.com.br/");

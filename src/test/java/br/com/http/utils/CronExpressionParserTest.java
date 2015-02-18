@@ -1,7 +1,6 @@
 package br.com.http.utils;
 
 import org.junit.Test;
-import org.quartz.CronExpression;
 
 import java.text.ParseException;
 import java.util.Date;

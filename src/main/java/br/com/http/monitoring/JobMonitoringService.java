@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+
 import java.util.*;
 
 @Stateless
@@ -41,7 +42,8 @@ public class JobMonitoringService {
 		return transformActualJobExecutionToInfo(query.getResultList());
 	}
 
-	private Date toThePast(Date date, int lookBackFinishTimeInHours) {
+	@SuppressWarnings("unused")
+    private Date toThePast(Date date, int lookBackFinishTimeInHours) {
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.setTime(date);
 		cal.add(Calendar.HOUR, lookBackFinishTimeInHours * -1);

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.ActivationConfigProperty;
-import javax.ejb.EJBException;
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -13,7 +12,8 @@ import javax.jms.ObjectMessage;
 
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/http")})
+		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/http"),
+		@ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1")})
 public class HttpClientMDB implements MessageListener {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientMDB.class);
