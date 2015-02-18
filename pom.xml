@@ -4,7 +4,7 @@
 
 	<groupId>br.com.http.queue</groupId>
 	<artifactId>http-queue</artifactId>
-	<version>1.0.5</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>The Simple Http Queue and Scheduler</name>
 
