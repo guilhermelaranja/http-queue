@@ -13,7 +13,7 @@ import javax.jms.ObjectMessage;
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
 		@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/http"),
-		@ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1")})
+		@ActivationConfigProperty(propertyName = "maxSession", propertyValue = "2")})
 public class HttpClientMDB implements MessageListener {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientMDB.class);
